@@ -1,0 +1,7 @@
+module nuclearSeed = NuclearSeedGenerator {
+         double ptMin=0.9
+         int32 maxPrimaryHits=5
+         double rescaleErrorFactor=80
+         double rescaleDirectionFactor=10
+         bool checkCompletedTrack=true
+}
