@@ -1,4 +1,4 @@
-module nuclearSeed = NuclearSeedGenerator {
+module nuclearSeed = NuclearSeedsEDProducer {
          double ptMin=0.9
          int32 maxPrimaryHits=5
          double rescaleErrorFactor=80
