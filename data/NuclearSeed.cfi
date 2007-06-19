@@ -3,7 +3,7 @@ module nuclearSeed = NuclearSeedsEDProducer {
          int32 maxPrimaryHits=5
          double rescaleErrorFactor=80
          double rescaleCurvatureFactor=80
-         double rescaleDirectionFactor=10
-         double rescalePositionFactor=3
+         double rescaleDirectionFactor=100
+         double rescalePositionFactor=5
          bool checkCompletedTrack=true
 }
