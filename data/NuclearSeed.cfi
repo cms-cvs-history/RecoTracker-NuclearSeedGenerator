@@ -6,4 +6,5 @@ module nuclearSeed = NuclearSeedsEDProducer {
          double rescaleDirectionFactor=100
          double rescalePositionFactor=5
          bool checkCompletedTrack=true
+         bool improveSeeds=false
 }
