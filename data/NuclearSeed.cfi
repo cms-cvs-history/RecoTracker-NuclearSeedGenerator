@@ -1,10 +1,10 @@
 module nuclearSeed = NuclearSeedsEDProducer {
          double ptMin=0.9
-         int32 maxPrimaryHits=5
+         int32  maxHits=10
          double rescaleErrorFactor=80
          double rescaleCurvatureFactor=80
          double rescaleDirectionFactor=100
          double rescalePositionFactor=5
-         bool checkCompletedTrack=true
-         bool improveSeeds=false
+         bool   checkCompletedTrack=true
+         bool   improveSeeds=false
 }
