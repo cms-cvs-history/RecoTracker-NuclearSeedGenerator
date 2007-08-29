@@ -1,3 +1,5 @@
 include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
+
+include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
