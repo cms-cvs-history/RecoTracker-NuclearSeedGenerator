@@ -1,5 +1,30 @@
 include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
 
+#Magnetic Field
+include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
+include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
+
+include "CalibTracker/SiStripLorentzAngle/data/SiStripLAFakeESSource.cfi"
+
+
+include "RecoParticleFlow/PFTracking/data/second.cff"
+replace secondClusters.recTracks="ctfWithMaterialTracks"
+
+# Ckf
+include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
+replace CkfTrajectoryBuilder.minimumNumberOfHits = 3
+replace CkfTrajectoryBuilder.ptCut = 0.2
+replace ckfTrackCandidates.SeedProducer = "nuclearSeed"
+replace ckfTrackCandidates.RedundantSeedCleaner = "none"
+
+# Final Fit
+include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
+replace KFFittingSmoother.MinNumberOfHits = 3
+
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
+
+sequence nuclear_seed = { nuclearSeed, nuclearSeedsToTrackAssociation }
+sequence nuclear_tracking = { nuclear_seed, ckfTrackCandidates, ctfWithMaterialTracks }

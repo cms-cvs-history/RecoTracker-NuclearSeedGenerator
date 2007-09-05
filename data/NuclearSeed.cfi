@@ -7,4 +7,5 @@ module nuclearSeed = NuclearSeedsEDProducer {
          double rescalePositionFactor=5
          bool   checkCompletedTrack=true
          bool   improveSeeds=false
+         string MeasurementTrackerName = ""
 }
