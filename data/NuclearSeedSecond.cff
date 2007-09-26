@@ -18,9 +18,9 @@ es_module nuclearCkfTrajectoryBuilder =
    CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
 replace nuclearCkfTrajectoryBuilder.ComponentName = "nuclearCkfTrajectoryBuilder"
 replace nuclearCkfTrajectoryBuilder.MeasurementTrackerName = "secondMeasurementTracker"
-replace nuclearCkfTrajectoryBuilder.ptCut = 0.2
+replace nuclearCkfTrajectoryBuilder.ptCut = 0.4
 replace nuclearCkfTrajectoryBuilder.maxLostHit = 0
-replace nuclearCkfTrajectoryBuilder.minimumNumberOfHits = 3
+replace nuclearCkfTrajectoryBuilder.minimumNumberOfHits = 4
 
 ##TRACK CANDIDATES
 module nuclearTrackCandidates =
@@ -33,6 +33,7 @@ replace nuclearTrackCandidates.TrajectoryBuilder = "nuclearCkfTrajectoryBuilder"
 module nuclearWithMaterialTracks = 
   ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
 replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"       
+replace KFFittingSmoother.MinNumberOfHits = 4
 
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
