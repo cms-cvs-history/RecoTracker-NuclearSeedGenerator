@@ -1,5 +1,5 @@
 module nuclearSeed = NuclearSeedsEDProducer {
-         double ptMin=0.4
+         double ptMin=0.3
          int32  maxHits=5
          double rescaleErrorFactor=150
          bool   checkCompletedTrack=true

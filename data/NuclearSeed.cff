@@ -7,24 +7,35 @@ include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
 
 include "CalibTracker/SiStripLorentzAngle/data/SiStripLAFakeESSource.cfi"
 
-
-include "RecoParticleFlow/PFTracking/data/second.cff"
-replace secondClusters.recTracks="ctfWithMaterialTracks"
-
-# Ckf
-include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
-replace CkfTrajectoryBuilder.minimumNumberOfHits = 4
-replace CkfTrajectoryBuilder.ptCut = 0.4
-replace ckfTrackCandidates.SeedProducer = "nuclearSeed"
-#replace ckfTrackCandidates.RedundantSeedCleaner = "none"
-
-# Final Fit
 include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
-replace KFFittingSmoother.MinNumberOfHits = 4
+include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
+
+##TRAJECTORY BUILDER
+es_module nuclearCkfTrajectoryBuilder =
+   CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
+replace nuclearCkfTrajectoryBuilder.ComponentName = "nuclearCkfTrajectoryBuilder"
+replace nuclearCkfTrajectoryBuilder.ptCut = 0.3
+replace nuclearCkfTrajectoryBuilder.maxLostHit = 0
+replace nuclearCkfTrajectoryBuilder.minimumNumberOfHits = 3
+
+##TRACK CANDIDATES
+module nuclearTrackCandidates =
+   ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
+replace nuclearTrackCandidates.SeedProducer= "nuclearSeed"
+replace nuclearTrackCandidates.TrajectoryBuilder = "nuclearCkfTrajectoryBuilder"
+
+
+##TRACKS
+module nuclearWithMaterialTracks = 
+  ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
+replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"       
+replace KFFittingSmoother.MinNumberOfHits = 3
+
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
 
 sequence nuclear_seed = { nuclearSeed, nuclearSeedsToTrackAssociation }
-sequence nuclear_tracking = { nuclear_seed, ckfTrackCandidates, ctfWithMaterialTracks }
+
+sequence nuclear_tracking = { nuclear_seed, nuclearTrackCandidates, nuclearWithMaterialTracks }
