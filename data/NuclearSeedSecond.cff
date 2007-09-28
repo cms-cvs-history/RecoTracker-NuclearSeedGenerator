@@ -41,6 +41,12 @@ replace nuclearSeed.MeasurementTrackerName="secondMeasurementTracker"
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
 
+
+include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
+
+
 sequence nuclear_seed_second = { secondClusters, secondPixelRecHits, secondStripRecHits, nuclearSeed, nuclearSeedsToTrackAssociation }
 
 sequence nuclear_tracking_second = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks }
+sequence nuclear_tracking_second_and_correction = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks, TrackCorrector }
+

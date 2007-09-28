@@ -36,6 +36,11 @@ include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
 
-sequence nuclear_seed = { nuclearSeed, nuclearSeedsToTrackAssociation }
+include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
 
+
+sequence nuclear_seed = { nuclearSeed, nuclearSeedsToTrackAssociation }
 sequence nuclear_tracking = { nuclear_seed, nuclearTrackCandidates, nuclearWithMaterialTracks }
+sequence nuclear_tracking_and_correction = { nuclear_seed, nuclearTrackCandidates, nuclearWithMaterialTracks, TrackCorrector } 
+
+
