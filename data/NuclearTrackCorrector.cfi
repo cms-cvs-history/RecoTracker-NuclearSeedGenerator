@@ -1,0 +1,20 @@
+   module TrackCorrector = NuclearTrackCorrector {
+        string InputTrajectory           = "TrackRefitter"
+        string InputNuclearSeed          = "nuclearSeed"
+        int32  InputHitDistance          = 3
+        int32  Verbosity                 = 0
+
+        # necessary for the fitting
+        string Fitter      = "KFFittingSmoother"
+        string Propagator  = "PropagatorWithMaterial"
+
+
+        # nested parameter set for TransientInitialStateEstimator
+        PSet TransientInitialStateEstimatorParameters =
+        {
+            string propagatorAlongTISE    = "PropagatorWithMaterial"
+            string propagatorOppositeTISE = "PropagatorWithMaterialOpposite"
+        }
+   }
+
+
