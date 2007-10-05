@@ -3,6 +3,7 @@
         string InputNuclearSeed          = "nuclearSeed"
         int32  InputHitDistance          = 3
         int32  Verbosity                 = 0
+	int32  KeepOnlyCorrectedTracks	 = 0
 
         # necessary for the fitting
         string Fitter      = "KFFittingSmoother"
