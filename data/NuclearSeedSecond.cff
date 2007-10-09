@@ -11,8 +11,15 @@ include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
 include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
 
 ##HIT REMOVAL
-module nuclearClusters = secondClusters from "RecoParticleFlow/PFTracking/data/second.cff"
-replace nuclearClusters.recTracks="ctfWithMaterialTracks"
+module nuclearClusters = RemainingClusterProducer{
+     InputTag matchedRecHits    = siStripMatchedRecHits:matchedRecHit
+     InputTag rphirecHits       = siStripMatchedRecHits:rphiRecHit
+     InputTag stereorecHits     = siStripMatchedRecHits:stereoRecHit
+     InputTag pixelHits         = siPixelRecHits:
+     InputTag recTracks         = ctfWithMaterialTracks:
+     double DistanceCut         = 0.1
+}
+
 
 ##TRACKER HITS
 module nuclearPixelRecHits =
@@ -64,9 +71,8 @@ include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cf
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
 
-
 sequence nuclear_seed_second = { nuclearClusters, nuclearPixelRecHits, nuclearStripRecHits, nuclearSeed, nuclearSeedsToTrackAssociation }
 
 sequence nuclear_tracking_second = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks }
-sequence nuclear_tracking_second_and_correction = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks, TrackCorrector }
+sequence nuclear_tracking_second_and_correction = { nuclear_tracking_second, TrackCorrector }
 
