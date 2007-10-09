@@ -1,8 +1,24 @@
 module nuclearSeed = NuclearSeedsEDProducer {
-         double ptMin=0.3
-         int32  maxHits=5
-         double rescaleErrorFactor=150
-         bool   checkCompletedTrack=true
-         bool   improveSeeds=false
+
+         # trajectory producer
+         string producer="TrackRefitter"
+
+         # the measurements
          string MeasurementTrackerName = ""
+
+         # pt min of the seeds
+         double ptMin=0.3
+
+         # max number of hits of the primary tracks to be checked
+         int32  maxHits=5
+
+         # factor to find to rescale cov. matrix used to find compatible measurements
+         double rescaleErrorFactor=150
+
+         # if true check if nuclear interaction also on completed tracks
+         bool   checkCompletedTrack=true
+
+         # exprimental seeding with 3 hits (does not work yet)
+         bool   improveSeeds=false
+
 }
