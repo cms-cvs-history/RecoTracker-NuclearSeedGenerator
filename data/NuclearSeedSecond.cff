@@ -10,14 +10,37 @@ include "CalibTracker/SiStripLorentzAngle/data/SiStripLAFakeESSource.cfi"
 include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
 include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
 
-include "RecoParticleFlow/PFTracking/data/second.cff"
-replace secondClusters.recTracks="ctfWithMaterialTracks"
+##HIT REMOVAL
+module nuclearClusters = secondClusters from "RecoParticleFlow/PFTracking/data/second.cff"
+replace nuclearClusters.recTracks="ctfWithMaterialTracks"
+
+##TRACKER HITS
+module nuclearPixelRecHits =
+  siPixelRecHits from "RecoLocalTracker/SiPixelRecHits/data/SiPixelRecHits.cfi"
+replace nuclearPixelRecHits.src="nuclearClusters"
+ 
+module nuclearStripRecHits = 
+  siStripMatchedRecHits from "RecoLocalTracker/SiStripRecHitConverter/data/SiStripRecHitConverter.cfi"
+replace nuclearStripRecHits.ClusterProducer = "nuclearClusters"
+
+
+##TRAJECTORY MEASUREMENT
+es_module nuclearMeasurementTracker =
+    MeasurementTracker from "RecoTracker/MeasurementDet/data/MeasurementTrackerESProducer.cfi"
+replace nuclearMeasurementTracker.ComponentName = "nuclearMeasurementTracker"
+replace nuclearMeasurementTracker.pixelClusterProducer = "nuclearClusters"
+replace nuclearMeasurementTracker.stripClusterProducer = "nuclearClusters"
+
+
+## SEEDS
+include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
+replace nuclearSeed.MeasurementTrackerName="nuclearMeasurementTracker"
 
 ##TRAJECTORY BUILDER
 es_module nuclearCkfTrajectoryBuilder =
    CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
 replace nuclearCkfTrajectoryBuilder.ComponentName = "nuclearCkfTrajectoryBuilder"
-replace nuclearCkfTrajectoryBuilder.MeasurementTrackerName = "secondMeasurementTracker"
+replace nuclearCkfTrajectoryBuilder.MeasurementTrackerName = "nuclearMeasurementTracker"
 replace nuclearCkfTrajectoryBuilder.ptCut = 0.4
 replace nuclearCkfTrajectoryBuilder.maxLostHit = 0
 replace nuclearCkfTrajectoryBuilder.minimumNumberOfHits = 4
@@ -36,16 +59,13 @@ replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"
 replace KFFittingSmoother.MinNumberOfHits = 4
 
 
-include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
-replace nuclearSeed.MeasurementTrackerName="secondMeasurementTracker"
-
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeedsToTrackAssociation.cfi"
 
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
 
 
-sequence nuclear_seed_second = { secondClusters, secondPixelRecHits, secondStripRecHits, nuclearSeed, nuclearSeedsToTrackAssociation }
+sequence nuclear_seed_second = { nuclearClusters, nuclearPixelRecHits, nuclearStripRecHits, nuclearSeed, nuclearSeedsToTrackAssociation }
 
 sequence nuclear_tracking_second = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks }
 sequence nuclear_tracking_second_and_correction = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks, TrackCorrector }
