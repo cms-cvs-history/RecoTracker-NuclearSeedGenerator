@@ -1,12 +1,17 @@
 include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
 
-#Magnetic Field
+#Magnetic Field and Geometry
 include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
 include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
 
+# Fake strips
 include "CalibTracker/SiStripLorentzAngle/data/SiStripLAFakeESSource.cfi"
 
+# NavigationSchool
+include "RecoTracker/TkNavigation/data/NavigationSchoolESProducer.cff"
+
+# Pattern Recognition and Fit
 include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
 include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
 

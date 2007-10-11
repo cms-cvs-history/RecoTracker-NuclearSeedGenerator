@@ -21,4 +21,6 @@ module nuclearSeed = NuclearSeedsEDProducer {
          # exprimental seeding with 3 hits (does not work yet)
          bool   improveSeeds=false
 
+         # NavigationSchool
+         string NavigationSchool="SimpleNavigationSchool"
 }
