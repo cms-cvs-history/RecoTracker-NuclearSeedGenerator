@@ -16,6 +16,9 @@
             string propagatorAlongTISE    = "PropagatorWithMaterial"
             string propagatorOppositeTISE = "PropagatorWithMaterialOpposite"
         }
+
+	# necessary for the TrackProducerAlgorithm
+        bool useHitsSplitting = false
    }
 
 
