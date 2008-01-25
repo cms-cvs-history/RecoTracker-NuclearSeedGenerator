@@ -12,8 +12,8 @@ module nuclearSeed = NuclearSeedsEDProducer {
          # max number of hits of the primary tracks to be checked
          int32  maxHits=5
 
-         # factor to find to rescale cov. matrix used to find compatible measurements
-         double rescaleErrorFactor=150
+         # factor to rescale cov. matrix used to find compatible measurements
+         double rescaleErrorFactor=1.5
 
          # if true check if nuclear interaction also on completed tracks
          bool   checkCompletedTrack=true
