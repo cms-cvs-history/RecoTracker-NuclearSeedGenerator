@@ -1,7 +1,7 @@
 module nuclearSeed = NuclearSeedsEDProducer {
 
          # trajectory producer
-         string producer="TrackRefitter"
+         string producer="generalTracks"
 
          # the measurements
          string MeasurementTrackerName = ""
