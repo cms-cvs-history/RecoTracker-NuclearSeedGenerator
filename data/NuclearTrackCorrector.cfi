@@ -1,9 +1,8 @@
-   module TrackCorrector = NuclearTrackCorrector {
-        string InputTrajectory           = "TrackRefitter"
-        string InputNuclearSeed          = "nuclearSeed"
-        int32  InputHitDistance          = 3
+   module trackCorrector = NuclearTrackCorrector {
+        string InputTrajectory           = "generalTracks"
+        string InputNuclearInteraction   = "nuclearInteractionMaker"
         int32  Verbosity                 = 0
-	int32  KeepOnlyCorrectedTracks	 = 0
+	bool  KeepOnlyCorrectedTracks	 = false
 
         # necessary for the fitting
         string Fitter      = "KFFittingSmoother"
@@ -19,6 +18,8 @@
 
 	# necessary for the TrackProducerAlgorithm
         bool useHitsSplitting = false
+
+        string AlgorithmName = "undefAlgorithm"
    }
 
 
