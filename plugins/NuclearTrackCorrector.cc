@@ -13,7 +13,7 @@
 //
 // Original Author:  Loic QUERTENMONT, Vincent ROBERFROID
 //         Created:  Tue Sep 18 14:22:48 CEST 2007
-// $Id: NuclearTrackCorrector.cc,v 1.13 2011/12/23 06:04:59 innocent Exp $
+// $Id: NuclearTrackCorrector.cc,v 1.14 2013/02/27 13:28:32 muzaffar Exp $
 //
 //
 
@@ -142,7 +142,36 @@ NuclearTrackCorrector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
                 reco::TrackExtraRef teref= reco::TrackExtraRef ( rTrackExtras, i );
                 reco::TrackExtra newTrackExtra = getNewTrackExtra(algoResults);
-                (algoResults[0].second.first)->setExtra( teref ); 
+                (algoResults[0].second.first)->setExtra( teref );
+                
+                // set the inner/outer position and momenta for the track for new format (AA) --
+                Trajectory* theTraj          = algoResults[0].first;
+                
+                TrajectoryStateOnSurface outertsos;
+                TrajectoryStateOnSurface innertsos;
+                
+                if (theTraj->direction() == alongMomentum) {
+                  outertsos = theTraj->lastMeasurement().updatedState();
+                  innertsos = theTraj->firstMeasurement().updatedState();
+                } else {
+                  outertsos = theTraj->firstMeasurement().updatedState();
+                  innertsos = theTraj->lastMeasurement().updatedState();
+                }
+
+                GlobalPoint v = outertsos.globalParameters().position();
+                GlobalVector p = outertsos.globalParameters().momentum();
+                math::XYZVector outmom( p.x(), p.y(), p.z() );
+                math::XYZPoint  outpos( v.x(), v.y(), v.z() );
+                v = innertsos.globalParameters().position();
+                p = innertsos.globalParameters().momentum();
+                math::XYZVector inmom( p.x(), p.y(), p.z() );
+                math::XYZPoint  inpos( v.x(), v.y(), v.z() );
+                
+                (algoResults[0].second.first)->setInnerPosition(inpos);
+                (algoResults[0].second.first)->setInnerMomentum(inmom);
+                (algoResults[0].second.first)->setOuterPosition(outpos);
+                (algoResults[0].second.first)->setOuterMomentum(outmom);
+
 
                 Output_track->push_back(*algoResults[0].second.first);        
                 Output_trackextra->push_back( newTrackExtra );
@@ -279,6 +308,8 @@ reco::TrackExtra NuclearTrackCorrector::getNewTrackExtra(const AlgoProductCollec
                 Trajectory* theTraj          = algoResults[0].first;
                 PropagationDirection seedDir = algoResults[0].second.second;
 
+// DO not need the inner/outer position and momnetum -> this is now in track.h (AA)
+
                 TrajectoryStateOnSurface outertsos;
                 TrajectoryStateOnSurface innertsos;
                 unsigned int innerId, outerId;
@@ -293,7 +324,7 @@ reco::TrackExtra NuclearTrackCorrector::getNewTrackExtra(const AlgoProductCollec
                   outerId   = theTraj->firstMeasurement().recHit()->geographicalId().rawId();
                   innerId   = theTraj->lastMeasurement().recHit()->geographicalId().rawId();
                 }
-
+/*
                 GlobalPoint v = outertsos.globalParameters().position();
                 GlobalVector p = outertsos.globalParameters().momentum();
                 math::XYZVector outmom( p.x(), p.y(), p.z() );
@@ -302,8 +333,13 @@ reco::TrackExtra NuclearTrackCorrector::getNewTrackExtra(const AlgoProductCollec
                 p = innertsos.globalParameters().momentum();
                 math::XYZVector inmom( p.x(), p.y(), p.z() );
                 math::XYZPoint  inpos( v.x(), v.y(), v.z() );
+*/
 
-                return reco::TrackExtra (outpos, outmom, true, inpos, inmom, true,
+// Use the reduced extra format, outer/inner p/pos should be set at the creation of the track (AA) 
+//                return reco::TrackExtra (outpos, outmom, true, inpos, inmom, true,
+//                                        outertsos.curvilinearError(), outerId,
+//                                        innertsos.curvilinearError(), innerId, seedDir);
+                return reco::TrackExtra (true, true,
                                         outertsos.curvilinearError(), outerId,
                                         innertsos.curvilinearError(), innerId, seedDir);
 
